@@ -1,0 +1,9 @@
+---
+- hosts: all
+
+  tasks:
+  - name: ensure cowsay is installed
+    apt:
+      name: cowsay
+      state: present
+    become: true

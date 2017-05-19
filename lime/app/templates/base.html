@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Secrets">
+    <meta name="keywords" content="HTML,CSS,XML,JavaScript">
+    <meta name="author" content="John Doe">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet"> 
+
+    <link rel="stylesheet" type="text/css" href="/static/css/skeleton.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/navbar.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+
+    <script type="text/javascript" src="/static/js/jquery-3.2.0.js"></script>
+
+    <title>
+      LIME
+    </title>
+  </head>
+
+  <body>
+    <div id="wrapper" class="toggled">
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <a href="/">
+                        LIME
+                    </a>
+                </li>
+                  <li><a href="/">Home</a></li>
+                  <li><a href="/problems">Problems</a></li>
+                  <li><a href="/login">Login</a></li>
+            </ul>
+        </div>
+
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                
+                <div class="twelve columns">
+                  {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                      {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        {{ message }}
+                        </div>
+                      {% endfor %}
+                    {% endif %}
+                  {% endwith %}
+                </div>
+
+                <div class="row">
+                    <div class="eleven columns">
+                        {% block main %}
+                        {% endblock %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </body>
+</html>
