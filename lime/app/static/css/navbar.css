@@ -26,10 +26,10 @@
     top: 0px;
     z-index: 1000;
     position: fixed;
-    left: 250px;
+    left: 220px;
     width: 0;
     height: 100%;
-    margin-left: -250px;
+    margin-left: -220px;
     overflow-y: auto;
     background: #000;
     -webkit-transition: all 0.5s ease;
@@ -50,7 +50,7 @@
 
 #wrapper.toggled #page-content-wrapper {
     position: absolute;
-    margin-right: -250px;
+    margin-right: -220px;
 }
 
 /* Sidebar Styles */
@@ -58,7 +58,7 @@
 .sidebar-nav {
     position: absolute;
     top: 0;
-    width: 250px;
+    width: 220px;
     margin: 0;
     padding: 0;
     list-style: none;
@@ -107,7 +107,7 @@
     }
 
     #wrapper.toggled {
-        padding-left: 250px;
+        padding-left: 230px;
     }
 
     #sidebar-wrapper {

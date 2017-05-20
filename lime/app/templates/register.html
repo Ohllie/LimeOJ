@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 
 {% block title %}
-LIME - Login
+LIME - Register
 {% endblock %}
 
 {% block main %}
 <div class="three columns">
-  <h2>Hey!</h2>
+  <h2>Registration</h2>
 
-  <form action="/login" method="POST">
+  <form action="/register" method="POST">
     <div class="row">
         <label for="username">Username</label>
         <input class="u-full-width" placeholder="Username" id="username" type="text">
@@ -17,10 +17,8 @@ LIME - Login
         <label for="password">Password</label>
         <input class="u-full-width" placeholder="Password" id="password" type="password">
     </div>
-    <input class="button-primary" value="Submit" type="submit">
+    <input class="button-primary" value="Register" type="submit">
   </form>
-
-  <small>No account? <a href="/register">Register here</a></small>
 </div>
 
 {% endblock %}
