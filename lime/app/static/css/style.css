@@ -1,3 +1,16 @@
 .form-signin > input {
   margin-bottom: 5px;
 }
+
+#problems-table {
+  width: 700px;
+  border-collapse: collapse;
+}
+
+#problems-table > tbody > tr  {
+  background-color: #fff;
+}
+
+#problems-table > tbody > tr:hover {
+  background-color: #eee;
+}

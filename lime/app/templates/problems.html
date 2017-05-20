@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}
+LIME - Login
+{% endblock %}
+
+{% block main %}
+<div class="eleven columns">
+  <h2>Problems</h2>
+  <hr>
+</div>
+
+<table id="problems-table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Difficulty</th>
+      <th>Times solved</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for i in range(5) %}
+      <tr>
+        <td>Summation {{ i+1 }}</td>
+        <td>Easy</td>
+        <td>0</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

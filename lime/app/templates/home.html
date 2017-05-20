@@ -1,11 +1,26 @@
 {% extends "base.html" %}
 
+{% block title %}
+LIME - Home
+{% endblock %}
+
 {% block main %}
 
-<h1>LIME</h1>
+<div class="eleven columns">
+  <div style="width: 400px; height: 64px; border: 1px solid #fff; margin-top: 15px;">
+    <div style="display: inline-block;">
+      <img src="/static/images/logo.png" height="64">
+    </div>
+    <div style="display: inline-block; position: relative; top: -15px; left: 10px;">
+      <h1 style="margin-bottom: 0;">
+        LIME
+      </h1>
+    </div>
+  </div>
 
-<hr>
+  <hr>
 
-I wish I had beer.
+  I wish I had beer.
+</div>
 
 {% endblock %}

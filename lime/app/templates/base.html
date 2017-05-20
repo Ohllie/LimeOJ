@@ -13,31 +13,36 @@
     <link rel="stylesheet" type="text/css" href="/static/css/skeleton.css">
     <link rel="stylesheet" type="text/css" href="/static/css/navbar.css">
     <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/font-awesome.min.css">
 
     <script type="text/javascript" src="/static/js/jquery-3.2.0.js"></script>
 
     <title>
+      {% block title %}
       LIME
+      {% endblock %}
     </title>
   </head>
 
   <body>
     <div id="wrapper" class="toggled">
         <div id="sidebar-wrapper">
-            <ul class="sidebar-nav">
+            <ul class="sidebar-nav" style="position: relative; top: 20px;">
                 <li class="sidebar-brand">
                     <a href="/">
-                        LIME
+                        <div style="display: inline-block;">
+                          LIME
+                        </div>
                     </a>
                 </li>
-                  <li><a href="/">Home</a></li>
-                  <li><a href="/problems">Problems</a></li>
-                  <li><a href="/login">Login</a></li>
+                <li><a href="/"><i class="fa fa-home" aria-hidden="true"></i> Home</a></li>
+                <li><a href="/problems"><i class="fa fa-navicon" aria-hidden="true"></i> Problems</a></li>
+                <li><a href="/login"><i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Login</a></li>
             </ul>
         </div>
 
         <div id="page-content-wrapper">
-            <div class="container-fluid">
+            <div>
                 
                 <div class="twelve columns">
                   {% with messages = get_flashed_messages(with_categories=true) %}
@@ -53,10 +58,8 @@
                 </div>
 
                 <div class="row">
-                    <div class="eleven columns">
-                        {% block main %}
-                        {% endblock %}
-                    </div>
+                  {% block main %}
+                  {% endblock %}
                 </div>
             </div>
         </div>
