@@ -44,17 +44,18 @@
         <div id="page-content-wrapper">
             <div>
                 
-                <div class="twelve columns">
-                  {% with messages = get_flashed_messages(with_categories=true) %}
-                    {% if messages %}
-                      {% for category, message in messages %}
-                        <div class="alert alert-{{ category }} alert-dismissible" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        {{ message }}
-                        </div>
-                      {% endfor %}
-                    {% endif %}
-                  {% endwith %}
+                <div class="row">
+                  <div class="four columns">
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                      {% if messages %}
+                        {% for category, message in messages %}
+                          <div style="border-radius: 4px; line-height: 10px; background-color: #eee; height: 10px; padding: 25px; font-size: 25px; margin-bottom: 20px;">
+                          {{ message }}
+                          </div>
+                        {% endfor %}
+                      {% endif %}
+                    {% endwith %}
+                  </div>
                 </div>
 
                 <div class="row">

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, g, request, flash, redirect, session
+from flask import Flask, render_template, g, request, flash, redirect, session, url_for
 from flask_sqlalchemy import SQLAlchemy
 
 import os, sys
@@ -32,6 +32,13 @@ def create_app():
   from routes.main import main
   app.register_blueprint(main)
 
+  try:
+    from routes.test import test
+    app.register_blueprint(test)
+  except ImportError:
+    # if the test route file doesn't exist, just don't register the routes
+    pass
+
   @app.errorhandler(404)
   def page_not_found(e):
       return render_template('404.html'), 404
@@ -40,4 +47,4 @@ def create_app():
 
 if __name__ == '__main__':
   app = create_app()
-  app.run(threaded=True, host="0.0.0.0", port=5000, debug=True)
+  app.run(threaded=True, host="0.0.0.0", port=80, debug=True)
