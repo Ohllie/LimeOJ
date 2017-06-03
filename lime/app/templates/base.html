@@ -3,9 +3,8 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8">
-    <meta name="description" content="Secrets">
-    <meta name="keywords" content="HTML,CSS,XML,JavaScript">
-    <meta name="author" content="John Doe">
+    <meta name="description" content="An open source online judge.">
+    <meta name="keywords" content="Online Judge,Competitive Programming,LimeOJ">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet"> 
@@ -49,9 +48,13 @@
                     {% with messages = get_flashed_messages(with_categories=true) %}
                       {% if messages %}
                         {% for category, message in messages %}
-                          <div style="border-radius: 4px; line-height: 10px; background-color: #eee; height: 10px; padding: 25px; font-size: 25px; margin-bottom: 20px;">
+                          <p class="alert alert-{{category}}">
                           {{ message }}
-                          </div>
+                          
+                          <a href="#" class="close" data-dismiss="alert" aria-label="close">
+                            <i class="fa fa-times" aria-hidden="true"></i>
+                          </a>
+                          </p>
                         {% endfor %}
                       {% endif %}
                     {% endwith %}
@@ -66,4 +69,8 @@
         </div>
     </div>
   </body>
+
+  {% block footerjs %}
+    <script type="text/javascript" src="/static/js/footer.js"></script>
+  {% endblock %}
 </html>
