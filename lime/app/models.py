@@ -9,6 +9,13 @@ def get_stamp():
   return int(time.time())
 
 
+# This is defined here explicitly so that drop_all will also drop the version table
+class AlembicVersion(db.Model):
+  __tablename__ = "alembic_version"
+
+  version_num = db.Column(db.String(256), primary_key=True)
+
+
 class User(db.Model):
   __tablename__ = "users"
 

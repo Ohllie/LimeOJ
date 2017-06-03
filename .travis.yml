@@ -2,4 +2,4 @@ language: python
 python:
   - "3.5"
 install: "pip install pep8"
-script: "pep8 --config=lime/pep8.cfg lime/app/ --exclude "env.py,test.py""
+script: "pep8 --config=lime/pep8.cfg lime/app/ --exclude \"env.py,test.py\""
