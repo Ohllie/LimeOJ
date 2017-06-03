@@ -4,6 +4,7 @@ from flask_migrate import Migrate, MigrateCommand, upgrade
 
 from app import create_app
 from database import db, session_scope
+from helpers import *
 from models import *
 
 app = create_app()
@@ -35,6 +36,13 @@ def seed():
     u.set_password("barfoo")
 
     session.add(u)
+
+    p = Problem()
+    p.title = "Test Problem"
+    p.description = "Test Problem Description"
+    p.difficulty = "5"
+
+    session.add(p)
 
   print("done")
 

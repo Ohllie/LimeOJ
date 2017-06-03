@@ -28,7 +28,7 @@ def serialize_session(user):
 
 
 def authorized(f):
-  ''' Decorator for making '''
+  ''' Decorator for making routes with automatic decoration '''
 
   @wraps(f)
   def decorated(*args, **kwargs):
