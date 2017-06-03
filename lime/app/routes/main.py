@@ -9,9 +9,11 @@ from auth import authorized, serialize_session
 
 main = Blueprint('main', __name__, template_folder='../templates')
 
+
 @main.route('/')
 def home():
   return render_template("home.html", rev=get_current_revision())
+
 
 @main.route('/register', methods=["GET", "POST"])
 def register():
@@ -46,13 +48,14 @@ def register():
     db.session.commit()
 
     # set session
-    
+
     session["user"] = serialize_session(user)
     flash("Welcome, {}!".format(username), "success")
 
     return redirect(url_for("main.home"))
 
   return render_template("register.html")
+
 
 @main.route('/login', methods=["GET", "POST"])
 def login():
@@ -76,19 +79,21 @@ def login():
 
     if acc.verify_password(password):
       # set the session variables
-      
+
       session["user"] = serialize_session(acc)
       flash("Welcome, {}!".format(username), "success")
- 
+
       return redirect(url_for("main.home"))
 
     flash(APP_INVALID_PASSWORD, "error")
 
   return render_template("login.html")
 
+
 @main.route('/problems')
 def problems():
   return render_template("problems.html")
+
 
 @main.route('/logout')
 @authorized
@@ -99,6 +104,7 @@ def logout():
 
   flash("Logged out successfully", "success")
   return redirect(url_for("main.home"))
+
 
 @main.route('/profile')
 @authorized

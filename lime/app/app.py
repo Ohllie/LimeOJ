@@ -3,10 +3,13 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_session import Session
 
 from datetime import timedelta
-import os, sys
+from database import db
 
 from os.path import join, dirname
 from dotenv import load_dotenv
+
+import os
+import sys
 
 dotenv_path = join(dirname(__file__), '../.env')
 load_dotenv(dotenv_path)
@@ -19,21 +22,22 @@ if not os.environ.get("DB_URL", False):
   print("DB_URL not set in .env!")
   sys.exit(1)
 
-from database import db
 
 def create_app():
-  
+
   app = Flask(__name__)
 
   app.secret_key = os.environ.get("FLASK_SECRET")
-  app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False # suppress the overhead warning
+
+  # suppress the overhead warning
+  app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
   app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DB_URL")
 
   # configure the server-side sessions
   app.config["SESSION_TYPE"] = "sqlalchemy"
   app.config["SESSION_SQLALCHEMY"] = db
-  app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(minutes=60*24*30)
-  
+  app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(minutes=60 * 24 * 30)
+
   app.debug = True
 
   db.init_app(app)

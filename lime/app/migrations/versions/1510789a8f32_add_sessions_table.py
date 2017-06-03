@@ -17,6 +17,7 @@ down_revision = '318d01fd68de'
 branch_labels = None
 depends_on = None
 
+
 def upgrade():
   op.create_table('sessions',
     sa.Column('id', mysql.INTEGER(display_width=11)),
@@ -27,7 +28,7 @@ def upgrade():
 
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('session_id'),
-    
+
     mysql_default_charset='utf8',
     mysql_engine='InnoDB'
   )
