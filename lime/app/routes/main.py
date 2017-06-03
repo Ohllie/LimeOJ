@@ -1,10 +1,11 @@
-from flask import session, request, render_template, flash, redirect, Blueprint, send_from_directory, abort
+from flask import session, request, render_template, flash, redirect, Blueprint, send_from_directory, abort, url_for
 
 import os
 
 from helpers import get_current_revision, redirect_url
 from models import *
 from constants import *
+from auth import authorized
 
 main = Blueprint('main', __name__, template_folder='../templates')
 
@@ -55,18 +56,44 @@ def login():
     accs = User.query.filter(User.username == username).all()
 
     if not len(accs):
-      flash(APP_INVALID_PASSWORD)
+      flash(APP_INVALID_PASSWORD, "error")
       return redirect(redirect_url())
 
     acc = accs[0]
 
     if acc.verify_password(password):
-      flash("Right!", "success")
-    else:
-      flash("Wrong!", "error")
+      # set the session variables
+      
+      session["user"] = {
+        "id": acc.id,
+        "username": acc.username,
+        "access_level": ACCESS_USER
+      }
+      
+      flash("Logged in successfully!", "success")
+      return redirect(url_for("main.home"))
+
+    flash(APP_INVALID_PASSWORD, "error")
 
   return render_template("login.html")
 
 @main.route('/problems')
 def problems():
   return render_template("problems.html")
+
+@main.route('/logout')
+@authorized
+def logout():
+
+  # clear the session and redirect
+  del session["user"]
+
+  flash("Logged out successfully", "success")
+  return redirect(url_for("main.home"))
+
+@main.route('/profile')
+@authorized
+def profile():
+  user_id = session["user"]
+
+  return render_template("base.html")

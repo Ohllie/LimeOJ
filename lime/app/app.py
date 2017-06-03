@@ -1,6 +1,7 @@
 from flask import Flask, render_template, g, request, flash, redirect, session, url_for
 from flask_sqlalchemy import SQLAlchemy
 
+from datetime import timedelta
 import os, sys
 
 from os.path import join, dirname
@@ -26,6 +27,7 @@ def create_app():
   app.secret_key = os.environ.get("FLASK_SECRET")
   app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False # suppress the overhead warning
   app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DB_URL")
+  app.debug = True
 
   db.init_app(app)
 
@@ -41,7 +43,15 @@ def create_app():
 
   @app.errorhandler(404)
   def page_not_found(e):
-      return render_template('404.html'), 404
+    return render_template('404.html'), 404
+
+  @app.before_request
+  def make_session_permanent():
+    session.permanent = True
+    app.permanent_session_lifetime = timedelta(minutes=60*24*14)
+
+  from auth import logged_in
+  app.add_template_global(logged_in)
 
   return app
 

@@ -36,7 +36,13 @@
                 </li>
                 <li><a href="/"><i class="fa fa-home" aria-hidden="true"></i> Home</a></li>
                 <li><a href="/problems"><i class="fa fa-navicon" aria-hidden="true"></i> Problems</a></li>
-                <li><a href="/login"><i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Login</a></li>
+
+                {% if logged_in() %}
+                  <li><a href="/profile"><i class="fa fa-user" aria-hidden="true"></i> Profile</a></li>
+                  <li><a href="/logout"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i> Log out</a></li>
+                {% else %}
+                  <li><a href="/login"><i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Log in</a></li>
+                {% endif %}
             </ul>
         </div>
 
@@ -49,11 +55,11 @@
                       {% if messages %}
                         {% for category, message in messages %}
                           <p class="alert alert-{{category}}">
-                          {{ message }}
-                          
-                          <a href="#" class="close" data-dismiss="alert" aria-label="close">
-                            <i class="fa fa-times" aria-hidden="true"></i>
-                          </a>
+                            {{ message }}
+                            
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">
+                              <i class="fa fa-times" aria-hidden="true"></i>
+                            </a>
                           </p>
                         {% endfor %}
                       {% endif %}
