@@ -1,11 +1,11 @@
-from flask import session, request, render_template, flash, redirect, Blueprint, send_from_directory, abort, url_for
-
 import os
+
+from flask import session, request, render_template, flash, redirect, Blueprint, send_from_directory, abort, url_for
 
 from helpers import get_current_revision, redirect_url
 from models import *
 from constants import *
-from auth import authorized
+from auth import authorized, serialize_session
 
 main = Blueprint('main', __name__, template_folder='../templates')
 
@@ -20,14 +20,22 @@ def register():
 
     username = request.form.get("username")
     password = request.form.get("password")
+    rpassword = request.form.get("rpassword")
 
-    if not username or not password:
+    print(username, password, rpassword)
+
+    if any(x is None or len(x) == 0 for x in [username, password, rpassword]):
+      flash("Please fill in all the fields", "error")
+      return redirect(redirect_url())
+
+    if password != rpassword:
+      flash("Passwords did not match!", "error")
       return redirect(redirect_url())
 
     accs = User.query.filter(User.username == username).all()
 
     if len(accs):
-      flash("Username is taken", "error")
+      flash("Username '{}' is taken".format(username), "error")
       return redirect(redirect_url())
 
     user = User()
@@ -37,7 +45,12 @@ def register():
     db.session.add(user)
     db.session.commit()
 
-    flash("Success!", "success")
+    # set session
+    
+    session["user"] = serialize_session(user)
+    flash("Welcome, {}!".format(username), "success")
+
+    return redirect(url_for("main.home"))
 
   return render_template("register.html")
 
@@ -64,13 +77,9 @@ def login():
     if acc.verify_password(password):
       # set the session variables
       
-      session["user"] = {
-        "id": acc.id,
-        "username": acc.username,
-        "access_level": ACCESS_USER
-      }
-      
-      flash("Logged in successfully!", "success")
+      session["user"] = serialize_session(acc)
+      flash("Welcome, {}!".format(username), "success")
+ 
       return redirect(url_for("main.home"))
 
     flash(APP_INVALID_PASSWORD, "error")

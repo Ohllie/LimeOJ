@@ -15,6 +15,16 @@ def logged_in(access_level=ACCESS_USER):
 
   return user["access_level"] >= access_level
 
+def serialize_session(user):
+  ''' Serialize the session from a user object '''
+
+  return {
+    "id": user.id,
+    "username": user.username,
+    "access_level": ACCESS_USER
+  }
+
+
 def authorized(f):
   ''' Decorator for making '''
 
