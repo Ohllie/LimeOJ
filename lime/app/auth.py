@@ -27,12 +27,14 @@ def serialize_session(user):
     }
 
 
-def authorized(f):
-  ''' Decorator for making routes with automatic decoration '''
+def authorized(access_level=ACCESS_USER):
+  ''' Decorator factory for making routes with automatic decoration '''
 
-  @wraps(f)
-  def decorated(*args, **kwargs):
-    if not logged_in():
-      return render_template("unauthorized.html"), 403
-    return f(*args, **kwargs)
-  return decorated
+  def decorator(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+      if not logged_in(access_level):
+        return render_template("unauthorized.html"), 403
+      return f(*args, **kwargs)
+    return decorated
+  return decorator
