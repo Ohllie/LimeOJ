@@ -20,12 +20,16 @@ LIME - Profile
   <thead>
     <tr>
       <th>Name</th>
+      <th>Status</th>
+      <th>Result</th>
     </tr>
   </thead>
   <tbody>
     {% for s in submissions %}
       <tr class="clickable" data-href="/submission/{{ s.id }}">
-        <td>{{ s.id }}</td>
+        <td>{{ s.problem.title }}</td>
+        <td>{{ s.status_long }}</td>
+        <td>{{ s.result }}</td>
       </tr>
     {% endfor %}
   </tbody>

@@ -15,10 +15,10 @@ def get_current_revision():
   return subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD']).decode("utf-8")
 
 
-def serialized(l):
+def serialized(l, extra=None):
   ''' Serializes a list of items '''
 
-  return [item.serialize() for item in l]
+  return [item.serialize(extra=extra) for item in l]
 
 
 def random_uid(length=4):

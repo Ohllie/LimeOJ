@@ -26,7 +26,11 @@ def profile():
 
   with session_scope() as s:
     user = User.query.filter(User.id == user_data["id"]).first_or_404()
-    submissions = serialized(user.submissions.order_by(Submission.created_at.desc()).all())
+
+    submissions = serialized(
+      user.submissions.join(Problem).order_by(Submission.created_at.desc()).all(),
+      extra=["problem"]
+    )
 
     user = user.serialize()
 

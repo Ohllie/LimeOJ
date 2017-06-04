@@ -17,6 +17,8 @@ def attrdict(obj, keys):
   d = {}
   for key in keys:
     d[key] = getattr(obj, key)
+    if hasattr(d[key], 'serialize'):
+      d[key] = d[key].serialize()
   return d
 
 
@@ -117,6 +119,7 @@ class Submission(db.Model):
   problem_id = db.Column(db.String(12), db.ForeignKey('problems.id'))
   user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
+  problem = db.relationship('Problem')
   user = db.relationship('User', backref=db.backref('submissions', lazy='dynamic'))
 
   code = db.Column(db.Text)
@@ -161,13 +164,13 @@ class Submission(db.Model):
       return session.query(Submission).filter(Submission.id == uid).first() is not None
     return False
 
-  def serialize(self):
+  def serialize(self, extra=None):
     ''' Serialize the object into a single python dictionary '''
 
     attrs = attrdict(self, [
       "id", "problem_id", "user_id", "code", "language",
       "status", "result", "tests_done", "tests_total", "created_at"
-    ])
+    ] + (extra if extra is not None else []))
 
     attrs["status_long"] = self.status_long()
     return attrs

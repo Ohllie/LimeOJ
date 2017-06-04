@@ -80,7 +80,7 @@ def submit(s, id):
   s.add(sub)
 
   flash("Submission successful!", "success")
-  return render_template("problem.html", problem=problem_s)
+  return redirect(url_for("problem.view_submission", id=sub.id))
 
 
 @problem.route('/submission/<id>')
