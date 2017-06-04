@@ -16,17 +16,6 @@ def home():
   return render_template("home.html", rev=get_current_revision())
 
 
-@main.route('/problems')
-def problems():
-
-  problems = []
-
-  with session_scope() as session:
-    problems = [p.serialize() for p in session.query(Problem).all()]
-
-  return render_template("problems.html", problems=problems)
-
-
 @main.route('/profile')
 @authorized()
 def profile():

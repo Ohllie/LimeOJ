@@ -52,6 +52,8 @@ class Problem(db.Model):
   description = db.Column(db.Text())
   difficulty = db.Column(db.Enum("1", "2", "3", "4", "5"))
 
+  tests = db.relationship('Test', backref='problems', lazy='dynamic')
+
   def __init__(self):
     ''' Initializes the id field with a random, unused id '''
 
@@ -71,3 +73,27 @@ class Problem(db.Model):
     ''' Serialize the object into a single python dictionary '''
 
     return attrdict(self, ["id", "title", "description", "difficulty"])
+
+
+class Test(db.Model):
+  __tablename__ = "tests"
+
+  id = db.Column(db.Integer, primary_key=True)
+  problem_id = db.Column(db.String(12), db.ForeignKey('problems.id'))
+
+  problem = db.relationship('Problem', foreign_keys='Test.problem_id')
+
+  input = db.Column(db.Binary)
+  output = db.Column(db.Binary)
+
+  example = db.Column(db.Boolean)
+
+  def serialize(self):
+    ''' Serialize the object into a single python dictionary '''
+
+    strs = attrdict(self, ["id", "problem_id", "example"])
+
+    strs["input"] = self.input.decode("ascii")
+    strs["output"] = self.output.decode("ascii")
+
+    return strs

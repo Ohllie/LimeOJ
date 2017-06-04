@@ -55,3 +55,20 @@ a.close[data-dismiss="alert"] {
 a.close[data-dismiss="alert"]:hover  {
   color: #555;
 }
+
+.clickable {
+  cursor: pointer;
+}
+
+.star-active {
+  color: orange;
+}
+
+.star-faded {
+  color: lightgrey;
+}
+
+.spacer-10 {
+  height: 10px;
+  display: block;
+}

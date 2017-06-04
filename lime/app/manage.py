@@ -37,12 +37,24 @@ def seed():
 
     session.add(u)
 
-    p = Problem()
-    p.title = "Test Problem"
-    p.description = "Test Problem Description"
-    p.difficulty = "5"
+    problems = []
 
-    session.add(p)
+    for d in range(1, 6):
+      p = Problem()
+      p.title = "Test Problem {}".format(d)
+      p.description = "Test Problem Description"
+      p.difficulty = str(d)
+
+      session.add(p)
+      problems.append(p.id)
+
+    t = Test()
+    t.problem_id = problems[0]
+    t.input = "1 2 3 4 5".encode("ascii")
+    t.output = "2 4 6 8 10".encode("ascii")
+    t.example = True
+
+    session.add(t)
 
   print("done")
 

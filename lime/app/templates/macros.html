@@ -1,0 +1,8 @@
+{% macro difficulty_stars(diff) %}
+  {% for i in range(diff|int) %}
+    <i class="fa fa-star star-active"></i>
+  {% endfor %}
+  {% for i in range(5 - diff|int) %}
+    <i class="fa fa-star star-faded"></i>
+  {% endfor %}
+{% endmacro %}

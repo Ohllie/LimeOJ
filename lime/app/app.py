@@ -48,6 +48,9 @@ def create_app():
   from routes.authentication import auth
   app.register_blueprint(auth)
 
+  from routes.problem import problem
+  app.register_blueprint(problem)
+
   try:
     from routes.test import test
     app.register_blueprint(test)

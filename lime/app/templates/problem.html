@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% from "macros.html" import difficulty_stars %}
+
+{% block title %}
+LIME - {{ problem.title }}
+{% endblock %}
+
+{% block main %}
+
+<div class="eleven columns">
+  <h1>
+    {{ problem.title }}
+
+    <small style="font-size: 15px;">
+      {{ difficulty_stars(problem.difficulty | int) }}
+    </small>
+  </h1>
+  <hr>
+
+  {{ problem.description }}
+
+  <hr>
+  
+  {% if examples | length %}
+    <h3>Examples</h3>
+
+    {% for example in examples %}
+      <div class="row">
+        <strong>Input</strong>
+      </div>
+      <code>
+      {{ example.input -}}
+      </code>
+
+      <div class="spacer-10"></div>
+
+      <div class="row">
+        <strong>Output</strong>
+      </div>
+      <code>
+      {{ example.output -}}
+      </code>
+      {% endfor %}
+    {% endif %}
+</div>
+
+{% endblock %}
