@@ -22,6 +22,7 @@ def upgrade():
     sa.Column('title', mysql.VARCHAR(length=64)),
     sa.Column('description', mysql.TEXT()),
     sa.Column('difficulty', mysql.ENUM("1", "2", "3", "4", "5"), nullable=False),
+    sa.Column('grader', mysql.TEXT(), nullable=False),
 
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('title'),

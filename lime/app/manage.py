@@ -6,6 +6,7 @@ from app import create_app
 from database import db, session_scope
 from helpers import *
 from models import *
+from constants import *
 
 app = create_app()
 
@@ -44,6 +45,7 @@ def seed():
       p.title = "Test Problem {}".format(d)
       p.description = "Test Problem Description"
       p.difficulty = str(d)
+      p.grader = "print(\"I'm a grader\")"
 
       session.add(p)
       problems.append(p.id)
@@ -54,6 +56,16 @@ def seed():
     t.output = "2 4 6 8 10".encode("ascii")
     t.example = True
 
+    s = Submission()
+    s.problem_id = problems[0]
+    s.user_id = 1
+    s.code = "some code here"
+    s.status = STATUS_IN_QUEUE
+    s.result = RESULT_ND
+    s.tests_done = 0
+    s.tests_total = 12
+
+    session.add(s)
     session.add(t)
 
   print("done")

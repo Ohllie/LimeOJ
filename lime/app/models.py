@@ -3,6 +3,7 @@ from datetime import datetime
 from database import db, session_scope
 from crypto import pwd_context
 from helpers import random_uid
+from constants import *
 
 
 def get_stamp():
@@ -43,6 +44,11 @@ class User(db.Model):
   def verify_password(self, password):
     return pwd_context.verify(password, self.password)
 
+  def serialize(self):
+    ''' Serialize the object into a single python dictionary '''
+
+    return attrdict(self, ["id", "username", "created_at", "last_login"])
+
 
 class Problem(db.Model):
   __tablename__ = "problems"
@@ -51,6 +57,7 @@ class Problem(db.Model):
   title = db.Column(db.String(64))
   description = db.Column(db.Text())
   difficulty = db.Column(db.Enum("1", "2", "3", "4", "5"))
+  grader = db.Column(db.Text())
 
   tests = db.relationship('Test', backref='problems', lazy='dynamic')
 
@@ -97,3 +104,26 @@ class Test(db.Model):
     strs["output"] = self.output.decode("ascii")
 
     return strs
+
+
+class Submission(db.Model):
+  __tablename__ = "submissions"
+
+  id = db.Column(db.Integer, primary_key=True)
+
+  problem_id = db.Column(db.String(12), db.ForeignKey('problems.id'))
+  user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+  code = db.Column(db.Text)
+  language = db.Column(db.String(12), default=LANGUAGE_CPP11)
+
+  status = db.Column(db.Integer)
+  result = db.Column(db.Integer)
+
+  tests_done = db.Column(db.Integer)
+  tests_total = db.Column(db.Integer)
+
+  created_at = db.Column(db.Integer, default=get_stamp)
+
+  execution_time = db.Column(db.Float)
+  code_length = db.Column(db.Integer)

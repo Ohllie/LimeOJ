@@ -19,6 +19,11 @@ def home():
 @main.route('/profile')
 @authorized()
 def profile():
-  user_id = session["user"]
 
-  return render_template("base.html")
+  user_data = session["user"]
+  user = None
+
+  with session_scope() as s:
+    user = User.query.filter(User.id == user_data["id"]).first_or_404().serialize()
+
+  return render_template("profile.html", user=user)
