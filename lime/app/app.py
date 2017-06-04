@@ -65,6 +65,13 @@ def create_app():
   from auth import logged_in
   app.add_template_global(logged_in)
 
+  from constants import VALID_LANGS
+
+  def valid_langs():
+    return VALID_LANGS.items()
+
+  app.add_template_global(valid_langs)
+
   sess = Session()
   sess.init_app(app)
 

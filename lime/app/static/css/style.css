@@ -60,8 +60,16 @@ a.close[data-dismiss="alert"]:hover  {
   cursor: pointer;
 }
 
-.star-active {
+.star-easy {
   color: orange;
+}
+
+.star-medium {
+  color: orangered;
+}
+
+.star-hard {
+  color: red;
 }
 
 .star-faded {

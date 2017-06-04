@@ -24,6 +24,9 @@ def upgrade():
     sa.Column('difficulty', mysql.ENUM("1", "2", "3", "4", "5"), nullable=False),
     sa.Column('grader', mysql.TEXT(), nullable=False),
 
+    sa.Column('time_limit', mysql.DOUBLE(), nullable=False),
+    sa.Column('memory_limit', mysql.INTEGER(display_width=12), nullable=False),
+
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('title'),
 

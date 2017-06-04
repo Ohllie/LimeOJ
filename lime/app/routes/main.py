@@ -22,8 +22,9 @@ def profile():
 
   user_data = session["user"]
   user = None
+  submissions = []
 
   with session_scope() as s:
     user = User.query.filter(User.id == user_data["id"]).first_or_404().serialize()
 
-  return render_template("profile.html", user=user)
+  return render_template("profile.html", user=user, submissions=submissions)

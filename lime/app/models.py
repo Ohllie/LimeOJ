@@ -59,6 +59,9 @@ class Problem(db.Model):
   difficulty = db.Column(db.Enum("1", "2", "3", "4", "5"))
   grader = db.Column(db.Text())
 
+  time_limit = db.Column(db.Float, default=1.0)
+  memory_limit = db.Column(db.Integer, default=64)
+
   tests = db.relationship('Test', backref='problems', lazy='dynamic')
 
   def __init__(self):

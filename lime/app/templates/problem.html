@@ -7,7 +7,7 @@ LIME - {{ problem.title }}
 
 {% block main %}
 
-<div class="eleven columns">
+<div class="five columns">
   <h1>
     {{ problem.title }}
 
@@ -40,8 +40,29 @@ LIME - {{ problem.title }}
       <code>
       {{ example.output -}}
       </code>
-      {% endfor %}
-    {% endif %}
+    {% endfor %}
+
+    <hr>
+  {% endif %}
+
+  <h3>Submit</h3>
+
+  <form action="/problem/{{ problem.id }}/submit" method="POST" enctype="multipart/form-data">
+    <div class="row">
+      <label for="filetype">File type</label>
+      <select name="filetype">
+        {% for k, v in valid_langs() %}
+          {% if k == "cpp11" %}
+            <option value="{{ v }}" selected="selected">{{ k }}</option>
+          {% else %}
+            <option value="{{ v }}">{{ k }}</option>
+          {% endif %}
+        {% endfor %}
+      </select>
+    </div>
+    <input type="file" name="file">
+    <input class="button-primary" value="Submit" type="submit">
+  </form>
 </div>
 
 {% endblock %}

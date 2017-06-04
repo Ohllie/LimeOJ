@@ -26,3 +26,9 @@ RESULT_QAQ = 5
 # Language names
 
 LANGUAGE_CPP11 = 'cpp11'
+LANGUAGE_PYTHON = 'python'
+
+VALID_LANGS = {
+  "C++11": LANGUAGE_CPP11,
+  "Python": LANGUAGE_PYTHON
+}

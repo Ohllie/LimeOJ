@@ -20,7 +20,7 @@ manager.add_command('db', MigrateCommand)
 def seed():
   ''' Seed the entire database '''
 
-  if not prompt_bool("Are you sure you want to lose all your data"):
+  if not prompt_bool("Are you sure you want to lose all your data?"):
     return
 
   print("Dropping tables")
