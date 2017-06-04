@@ -38,7 +38,10 @@ def create_app():
   app.config["SESSION_SQLALCHEMY"] = db
   app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(minutes=60 * 24 * 30)
 
-  app.debug = True
+  # disable strict slashes in routes
+  app.url_map.strict_slashes = False
+
+  app.debug = ("LIME_DEBUG" in os.environ)
 
   db.init_app(app)
 
@@ -50,6 +53,9 @@ def create_app():
 
   from routes.problem import problem
   app.register_blueprint(problem)
+
+  from routes.grader import grader
+  app.register_blueprint(grader)
 
   try:
     from routes.test import test

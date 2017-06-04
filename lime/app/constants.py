@@ -21,7 +21,8 @@ RESULT_AC = 1
 RESULT_WA = 2
 RESULT_TLE = 3
 RESULT_MLE = 4
-RESULT_QAQ = 5
+RESULT_CE = 5
+RESULT_QAQ = 6
 
 # Language names
 

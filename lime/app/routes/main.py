@@ -2,7 +2,7 @@ import os
 
 from flask import session, request, render_template, flash, redirect, Blueprint, send_from_directory, abort, url_for
 
-from helpers import get_current_revision, redirect_url
+from helpers import get_current_revision, redirect_url, serialized
 from models import *
 from constants import *
 from auth import authorized, serialize_session
@@ -25,6 +25,9 @@ def profile():
   submissions = []
 
   with session_scope() as s:
-    user = User.query.filter(User.id == user_data["id"]).first_or_404().serialize()
+    user = User.query.filter(User.id == user_data["id"]).first_or_404()
+    submissions = serialized(user.submissions.order_by(Submission.created_at.desc()).all())
+
+    user = user.serialize()
 
   return render_template("profile.html", user=user, submissions=submissions)

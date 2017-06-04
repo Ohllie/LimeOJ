@@ -18,7 +18,7 @@ depends_on = None
 
 def upgrade():
   op.create_table('submissions',
-    sa.Column('id', mysql.INTEGER(display_width=12)),
+    sa.Column('id', mysql.VARCHAR(length=12)),
 
     sa.Column('problem_id', mysql.VARCHAR(length=12)),
     sa.Column('user_id', mysql.INTEGER(display_width=12)),

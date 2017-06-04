@@ -7,16 +7,16 @@ LIME - Home
 {% block main %}
 
 <div class="eleven columns">
-  <div style="width: 400px; height: 64px; border: 1px solid #fff; margin-top: 15px;">
-    <div style="display: inline-block;">
+  <div id="logo-box">
+    <div id="logo-image-box">
       <img src="/static/images/logo.png" height="64">
     </div>
-    <div style="display: inline-block; position: relative; top: -15px; left: 10px;">
+    <div id="logo-text-box">
       <h1 style="margin-bottom: 0;">
         LIME
 
-        <small style="font-size: 14px; color: #aaa;">
-          {{ rev }}
+        <small id="logo-revision">
+          <a href="https://github.com/Ohllie/LimeOJ">{{ rev }}</a>
         </small>
       </h1>
     </div>

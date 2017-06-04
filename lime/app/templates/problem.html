@@ -7,7 +7,7 @@ LIME - {{ problem.title }}
 
 {% block main %}
 
-<div class="five columns">
+<div class="seven columns">
   <h1>
     {{ problem.title }}
 
@@ -52,7 +52,7 @@ LIME - {{ problem.title }}
       <label for="filetype">File type</label>
       <select name="filetype">
         {% for k, v in valid_langs() %}
-          {% if k == "cpp11" %}
+          {% if v == "cpp11" %}
             <option value="{{ v }}" selected="selected">{{ k }}</option>
           {% else %}
             <option value="{{ v }}">{{ k }}</option>

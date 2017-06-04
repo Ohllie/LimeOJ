@@ -16,4 +16,19 @@ LIME - Profile
   Submissions
 </h4>
 
+<table id="problems-table" class="padded-table">
+  <thead>
+    <tr>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for s in submissions %}
+      <tr class="clickable" data-href="/submission/{{ s.id }}">
+        <td>{{ s.id }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
 {% endblock %}

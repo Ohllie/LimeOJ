@@ -1,5 +1,7 @@
 /* Make alerts dismissible */
 
+hljs.initHighlightingOnLoad();
+
 $(function() {
   $(".close").each(function() {
     $(this).click(function() {

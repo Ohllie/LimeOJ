@@ -112,10 +112,12 @@ class Test(db.Model):
 class Submission(db.Model):
   __tablename__ = "submissions"
 
-  id = db.Column(db.Integer, primary_key=True)
+  id = db.Column(db.String(12), primary_key=True)
 
   problem_id = db.Column(db.String(12), db.ForeignKey('problems.id'))
   user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+  user = db.relationship('User', backref=db.backref('submissions', lazy='dynamic'))
 
   code = db.Column(db.Text)
   language = db.Column(db.String(12), default=LANGUAGE_CPP11)
@@ -130,3 +132,42 @@ class Submission(db.Model):
 
   execution_time = db.Column(db.Float)
   code_length = db.Column(db.Integer)
+
+  def __init__(self):
+    ''' Initializes the id field with a random, unused id '''
+
+    length = 6
+    self.id = random_uid(length=length)
+
+    while self.uid_exists(self.id):
+      self.id = random_ui(length=length)
+
+  def status_long(self):
+    ''' Returns a status string for this submission '''
+
+    if self.status == STATUS_IN_QUEUE:
+      return "In queue"
+    elif self.status == STATUS_TESTING:
+      return "Testing ({:.0f} %)".format(self.tests_done / max(self.tests_total, 1) * 100)
+    elif self.status == STATUS_COMPLETE:
+      return "Graded"
+
+    return "Unknown"
+
+  def uid_exists(self, uid):
+    ''' Checks whether a problem with the given id exists in the database '''
+
+    with session_scope() as session:
+      return session.query(Submission).filter(Submission.id == uid).first() is not None
+    return False
+
+  def serialize(self):
+    ''' Serialize the object into a single python dictionary '''
+
+    attrs = attrdict(self, [
+      "id", "problem_id", "user_id", "code", "language",
+      "status", "result", "tests_done", "tests_total", "created_at"
+    ])
+
+    attrs["status_long"] = self.status_long()
+    return attrs

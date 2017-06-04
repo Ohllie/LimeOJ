@@ -29,7 +29,7 @@ def view(id):
 @transaction
 @authorized()
 def submit(s, id):
-  problem = Problem.query.filter(Problem.id == id).first_or_404()
+  problem = s.query(Problem).filter(Problem.id == id).first_or_404()
   problem_s = problem.serialize()
 
   def ret():
@@ -70,7 +70,7 @@ def submit(s, id):
   sub = Submission()
   sub.user_id = session["user"]["id"]
   sub.language = request.form["filetype"]
-  sub.problem_id = problem.id
+  sub.problem_id = problem_s["id"]
   sub.code = code
   sub.status = STATUS_IN_QUEUE
   sub.result = RESULT_ND
@@ -81,6 +81,15 @@ def submit(s, id):
 
   flash("Submission successful!", "success")
   return render_template("problem.html", problem=problem_s)
+
+
+@problem.route('/submission/<id>')
+@transaction
+@authorized()
+def view_submission(s, id):
+  s = Submission.query.filter(Submission.id == id).first_or_404()
+
+  return render_template("submission.html", submission=s.serialize())
 
 
 @problem.route('/problems')

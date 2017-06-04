@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}
+LIME - Submission
+{% endblock %}
+
+{% block main %}
+
+<div class="six columns">
+  <h3>
+    Submission
+    <small style="color: #aaa; font-size: 15px;">
+      {{ submission.id }}
+    </small>
+  </h3>
+  <hr>
+
+<h5>Status: <strong style="font-weight: 600;">{{ submission.status_long }}</strong></h5>
+
+
+<div class="spacer-10"></div>
+
+  <h5>Code</h5>
+<pre>
+<code class="cpp">{{ submission.code }}
+</code>
+</pre>
+</div>
+
+{% endblock %}
