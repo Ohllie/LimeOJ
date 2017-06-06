@@ -17,7 +17,7 @@ LIME - {{ problem.title }}
   </h1>
   <hr>
 
-  {{ problem.description }}
+  {{ problem.description | markdown }}
 
   <hr>
   
@@ -28,9 +28,7 @@ LIME - {{ problem.title }}
       <div class="row">
         <strong>Input</strong>
       </div>
-      <code>
-      {{ example.input -}}
-      </code>
+<pre><code>{{ example.input -}}</code></pre>
 
       <div class="spacer-10"></div>
 
@@ -44,7 +42,8 @@ LIME - {{ problem.title }}
 
     <hr>
   {% endif %}
-
+  
+  {% if logged_in() %}
   <h3>Submit</h3>
 
   <form action="/problem/{{ problem.id }}/submit" method="POST" enctype="multipart/form-data">
@@ -63,6 +62,10 @@ LIME - {{ problem.title }}
     <input type="file" name="file">
     <input class="button-primary" value="Submit" type="submit">
   </form>
+
+  {% else %}
+  <a href="/login">Log in to submit a solution</a>
+  {% endif %}
 </div>
 
 {% endblock %}

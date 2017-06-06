@@ -2,6 +2,8 @@ from flask import Flask, render_template, g, request, flash, redirect, session, 
 from flask_sqlalchemy import SQLAlchemy
 from flask_session import Session
 
+from flaskext.markdown import Markdown
+
 from datetime import timedelta
 from database import db
 
@@ -78,8 +80,13 @@ def create_app():
 
   app.add_template_global(valid_langs)
 
+  from helpers import epoch
+  app.add_template_filter(epoch)
+
   sess = Session()
   sess.init_app(app)
+
+  Markdown(app)
 
   return app
 

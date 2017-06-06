@@ -1,14 +1,16 @@
 {% macro difficulty_stars(diff) %}
-  {% for i in range(diff|int) %}
-    {% if i < 2 %}
-      <i class="fa fa-fire star-easy"></i>
-    {% elif i < 4 %}
-      <i class="fa fa-fire star-medium"></i>
-    {% else %}
-      <i class="fa fa-fire star-hard"></i>
-    {% endif %}
-  {% endfor %}
-  {% for i in range(5 - diff|int) %}
-    <i class="fa fa-fire star-faded"></i>
-  {% endfor %}
+  <div style="display: inline-block;">
+    {% for i in range(diff|int) %}
+      {% if i < 2 %}
+        <i class="fa fa-fire star-easy"></i>
+      {% elif i < 4 %}
+        <i class="fa fa-fire star-medium"></i>
+      {% else %}
+        <i class="fa fa-fire star-hard"></i>
+      {% endif %}
+    {% endfor %}
+    {% for i in range(5 - diff|int) %}
+      <i class="fa fa-fire star-faded"></i>
+    {% endfor %}
+  </div>
 {% endmacro %}

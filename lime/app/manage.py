@@ -40,20 +40,25 @@ def seed():
 
     problems = []
 
-    for d in range(1, 6):
-      p = Problem()
-      p.title = "Test Problem {}".format(d)
-      p.description = "Test Problem Description"
-      p.difficulty = str(d)
-      p.grader = "print(\"I'm a grader\")"
+    p = Problem()
+    p.title = "Squares"
+    p.description = """
+Given a list of numbers, return their **squares**.
 
-      session.add(p)
-      problems.append(p.id)
+The first line of the input contains n, the length of the list.<br>
+The next line contains n space separated integers.
+    """
+    p.difficulty = "1"
+    p.grader = "print(\"I'm a grader\")"
+
+    session.add(p)
+    problems.append(p.id)
 
     t = Test()
     t.problem_id = problems[0]
-    t.input = "1 2 3 4 5".encode("ascii")
-    t.output = "2 4 6 8 10".encode("ascii")
+    t.input = """5
+1 2 3 4 5""".encode("ascii")
+    t.output = "1 4 9 16 25".encode("ascii")
     t.example = True
 
     s = Submission()

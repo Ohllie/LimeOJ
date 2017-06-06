@@ -157,6 +157,21 @@ class Submission(db.Model):
 
     return "Unknown"
 
+  def result_long(self):
+    ''' Returns a result string for this submission '''
+
+    result_strings = {
+      RESULT_ND: "Waiting",
+      RESULT_AC: "Accepted",
+      RESULT_WA: "Wrong Answer",
+      RESULT_TLE: "Time Limit Exceeded",
+      RESULT_MLE: "Memory Limit Exceeded",
+      RESULT_CE: "Compilation Error",
+      RESULT_QAQ: "System Error"
+    }
+
+    return result_strings.get(self.result, "Unknown")
+
   def uid_exists(self, uid):
     ''' Checks whether a problem with the given id exists in the database '''
 
@@ -173,4 +188,6 @@ class Submission(db.Model):
     ] + (extra if extra is not None else []))
 
     attrs["status_long"] = self.status_long()
+    attrs["result_long"] = self.result_long()
+
     return attrs

@@ -3,9 +3,10 @@ from flask import request, url_for
 import subprocess
 import string
 import random
+from datetime import datetime
 
 
-def redirect_url(default='index'):
+def redirect_url(default='main.home'):
     return request.args.get('next') or \
            request.referrer or \
            url_for(default)
@@ -24,3 +25,7 @@ def serialized(l, extra=None):
 def random_uid(length=4):
   charset = string.ascii_lowercase + string.ascii_uppercase + string.digits
   return "".join([random.choice(charset) for x in range(length)])
+
+
+def epoch(stamp):
+  return datetime.fromtimestamp(stamp).strftime('%c')

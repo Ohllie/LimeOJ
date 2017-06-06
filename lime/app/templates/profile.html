@@ -22,6 +22,7 @@ LIME - Profile
       <th>Name</th>
       <th>Status</th>
       <th>Result</th>
+      <th>Date</th>
     </tr>
   </thead>
   <tbody>
@@ -29,7 +30,8 @@ LIME - Profile
       <tr class="clickable" data-href="/submission/{{ s.id }}">
         <td>{{ s.problem.title }}</td>
         <td>{{ s.status_long }}</td>
-        <td>{{ s.result }}</td>
+        <td>{{ s.result_long }}</td>
+        <td>{{ s.created_at | epoch }}</td>
       </tr>
     {% endfor %}
   </tbody>
