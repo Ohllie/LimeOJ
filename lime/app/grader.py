@@ -9,17 +9,18 @@ import datetime
 from flask import Flask, render_template, g, request, flash, redirect, session, url_for
 from queue import Queue, Empty
 
-# How often the grader polls its internal queue
-GRADER_POLLS_PER_SEC = 2 # per second
+# How often the grader polls its internal queue, per second
+GRADER_POLLS_PER_SEC = 2
 
 # Seconds to wait between polling the app for new submissions
-GRADER_CHECK_INTERVAL = 5 # seconds
+GRADER_CHECK_INTERVAL = 5
 
 # The url for the lime app
 GRADER_APP_URL = "http://localhost"
 
 # Maximum seconds the grader is allowed to wait for a response from app
 GRADER_POLLER_TIMEOUT = 5
+
 
 class Grader(object):
   """ The main grader class """
@@ -70,7 +71,7 @@ class Grader(object):
         self._handle_message(message)
         queue.task_done()
 
-        time.sleep(1.0/GRADER_POLLS_PER_SEC)
+        time.sleep(1.0 / GRADER_POLLS_PER_SEC)
       except Empty:
         # No items in queue
         pass
@@ -84,8 +85,9 @@ class Grader(object):
 
   def _handle_message(self, item):
     """ Handle a single item from the queue """
+
     self._log("Handling message!")
-    
+
     if item == "check_request":
       self._check_queue()
 
@@ -153,7 +155,7 @@ g = Grader()
 # Init flask
 
 grader = Flask(__name__)
-grader.secret_key =  os.environ.get("FLASK_SECRET")
+grader.secret_key = os.environ.get("FLASK_SECRET")
 grader.debug = ("LIME_DEBUG" in os.environ)
 
 # disable strict slashes in routes
@@ -161,21 +163,22 @@ grader.url_map.strict_slashes = False
 
 # route definitions
 
+
 @grader.route("/ping")
 def ping():
-  
+
   g.enqueue("check_request")
 
   if not g.running():
     g.start()
-  
+
   return "pong"
 
 if __name__ == '__main__':
 
   def start():
     time.sleep(0.1)
-    
+
     if not g.running():
       g.start()
 
