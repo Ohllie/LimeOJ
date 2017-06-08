@@ -1,9 +1,65 @@
 ---
 - hosts: all
+  become: true
 
   tasks:
   - name: ensure cowsay is installed
     apt:
       name: cowsay
       state: present
-    become: true
+
+  - name: install all required packages
+    apt:
+      name: "{{ item }}"
+      state: present
+    with_items:
+      - rsync
+      - python3-pip
+      - python3.4-venv
+      - mysql-server
+      - libmysqlclient-dev
+      - libffi-dev
+      - libssl-dev
+      - supervisor
+      - python-mysqldb
+
+  - name: make sure /lime-code exists
+    file:
+      path: "/lime-code"
+      state: directory
+
+  - name: copy code to /lime-code
+    synchronize:
+      src: "/lime/"
+      dest: "/lime-code"
+
+  - name: install virtualenv
+    pip:
+      name: virtualenv
+      virtualenv: "/lime-code/venv"
+      virtualenv_command: /usr/bin/python3.4 -m venv
+
+  - name: install packages in virtualenv
+    pip:
+      virtualenv: "/lime-code/venv"
+      requirements: "/lime-code/lime/requirements.txt"
+      virtualenv_command: /usr/bin/python3.4 -m venv
+
+  - name: Create a new database for lime
+    mysql_db:
+      name: lime
+      state: present
+
+  - name: Copy supervisor file
+    copy:
+      src: "/lime-code/lime/supervisor/lime.conf"
+      dest: "/etc/supervisor/conf.d/lime.conf"
+      remote_src: True
+
+  - name: Run migrations
+    shell: /lime-code/lime/upgrade.sh
+
+  - name: Restart lime app
+    supervisorctl:
+      name: lime
+      state: restarted

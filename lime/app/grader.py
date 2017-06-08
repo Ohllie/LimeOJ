@@ -5,6 +5,7 @@ import time
 import traceback
 import requests
 import datetime
+import docker
 
 from flask import Flask, render_template, g, request, flash, redirect, session, url_for
 from queue import Queue, Empty
@@ -49,7 +50,7 @@ class Grader(object):
   def _log(self, message):
     """ Log a message """
 
-    print("[GRADER|{:%Y-%m-%d %H:%M:%S}]: {}".format(datetime.datetime.now(), message))
+    print("[{:%Y-%m-%d %H:%M:%S}]: {}".format(datetime.datetime.now(), message))
 
   def _error(self, message, tb=True):
     """ Log an error and the latest traceback """
@@ -124,13 +125,15 @@ class Grader(object):
       first = submissions[0]
       self._log("Starting grading process for submission {}".format(first))
 
+      self._grade_submission(first)
+
     # self._log("Checking submissions")
     self.last_check = time.time()
 
   def _grade_submission(self, id):
     """ Grade a submission with the given id, blocking call """
 
-    pass
+    self._get_resource("grader/{}/start".format(id))
 
   def start(self):
     """ Start the main loop runner thread """
@@ -150,6 +153,7 @@ class Grader(object):
 
     return self.up
 
+dclient = docker.from_env()
 g = Grader()
 
 # Init flask

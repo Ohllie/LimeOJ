@@ -13,7 +13,10 @@ def redirect_url(default='main.home'):
 
 
 def get_current_revision():
-  return subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD']).decode("utf-8")
+  try:
+    return subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD']).decode("utf-8")
+  except:
+    return ""
 
 
 def serialized(l, extra=None):

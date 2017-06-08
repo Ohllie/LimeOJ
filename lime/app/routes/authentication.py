@@ -18,8 +18,6 @@ def register():
     password = request.form.get("password")
     rpassword = request.form.get("rpassword")
 
-    print(username, password, rpassword)
-
     if any(x is None or len(x) == 0 for x in [username, password, rpassword]):
       flash("Please fill in all the fields", "error")
       return redirect(redirect_url())

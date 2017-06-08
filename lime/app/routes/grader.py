@@ -45,11 +45,11 @@ def start(session, id):
 
   s.status = STATUS_TESTING
   session.add(s)
-  return "ok"
+  return jsonify({"message": "ok"})
 
 
 @grader.route("/grader/<id>/status")
 @transaction
 def status(session, id):
   s = session.query(Submission).filter(Submission.id == id).first_or_404()
-  return s.status_long()
+  return jsonify({"status": s.status_long()})
