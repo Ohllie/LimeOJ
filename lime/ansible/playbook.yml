@@ -8,20 +8,34 @@
       name: cowsay
       state: present
 
+  - name: add docker repository
+    shell: |
+      add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+      apt-get update
+
+  - name: add lime user
+    user:
+        name: lime
+        comment: "Lime runner user"
+        group: sudo
+
   - name: install all required packages
     apt:
       name: "{{ item }}"
       state: present
+      allow_unauthenticated: yes # for docker-ce
     with_items:
       - rsync
       - python3-pip
-      - python3.4-venv
+      - python3-venv
       - mysql-server
       - libmysqlclient-dev
       - libffi-dev
       - libssl-dev
       - supervisor
-      - python-mysqldb
+      - python3-mysqldb
+      - docker-ce
+      - virtualenv
 
   - name: make sure /lime-code exists
     file:
@@ -37,13 +51,11 @@
     pip:
       name: virtualenv
       virtualenv: "/lime-code/venv"
-      virtualenv_command: /usr/bin/python3.4 -m venv
 
   - name: install packages in virtualenv
     pip:
       virtualenv: "/lime-code/venv"
       requirements: "/lime-code/lime/requirements.txt"
-      virtualenv_command: /usr/bin/python3.4 -m venv
 
   - name: Create a new database for lime
     mysql_db:

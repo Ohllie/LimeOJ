@@ -1,6 +1,8 @@
 __pycache__/
 *.py[cod]
 
+production_key
+*.retry
 venv/
 lime/.env
 .vagrant

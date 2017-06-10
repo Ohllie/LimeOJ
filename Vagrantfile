@@ -4,10 +4,10 @@
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  
+ 
   config.vm.define :controller do |controller|
 
-    controller.vm.box = "ubuntu/trusty64"
+    controller.vm.box = "ubuntu/xenial64"
     controller.vm.hostname = "controller"
     controller.vm.network :private_network, ip: "192.168.10.11"
 
@@ -27,28 +27,28 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     SCRIPT
 
     controller.vm.provision "shell", inline: $script, privileged: true
-    controller.vm.provision "file", source: "lime/ansible/provision_key", destination: "/home/vagrant/.ssh/id_rsa"
-    controller.vm.provision "shell", inline: "chmod 600 /home/vagrant/.ssh/id_rsa", privileged: true
+    controller.vm.provision "file", source: "lime/ansible/provision_key", destination: "/home/ubuntu/.ssh/id_rsa"
+    controller.vm.provision "shell", inline: "chmod 600 /home/ubuntu/.ssh/id_rsa", privileged: true
   end
 
   config.vm.define :master do |master|
 
-    master.vm.box = "ubuntu/trusty64"
+    master.vm.box = "ubuntu/xenial64"
     master.vm.hostname = "master"
     master.vm.network :private_network, ip: "192.168.10.12"
 
-    master.vm.network "forwarded_port", guest: 80, host: 80
+    master.vm.network "forwarded_port", guest: 80, host: 8080
     master.vm.synced_folder "lime", "/lime"
 
     $script = <<-SCRIPT
 
-    cat /home/vagrant/.ssh/provision_key.pub >> /home/vagrant/.ssh/authorized_keys
-    rm /home/vagrant/.ssh/provision_key.pub
+    cat /home/ubuntu/.ssh/provision_key.pub >> /home/ubuntu/.ssh/authorized_keys
+    rm /home/ubuntu/.ssh/provision_key.pub
 
     echo "Master provisioned"
     SCRIPT
 
-    master.vm.provision "file", source: "lime/ansible/provision_key.pub", destination: "/home/vagrant/.ssh/provision_key.pub"
+    master.vm.provision "file", source: "lime/ansible/provision_key.pub", destination: "/home/ubuntu/.ssh/provision_key.pub"
     master.vm.provision "shell", inline: $script, privileged: true
   end
 end

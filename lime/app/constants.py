@@ -31,5 +31,5 @@ LANGUAGE_PYTHON = 'python'
 
 VALID_LANGS = {
   "C++11": LANGUAGE_CPP11,
-  "Python": LANGUAGE_PYTHON
+  # "Python": LANGUAGE_PYTHON
 }

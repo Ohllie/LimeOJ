@@ -27,7 +27,7 @@ LIME - Profile
   </thead>
   <tbody>
     {% for s in submissions %}
-      <tr class="clickable" data-href="/submission/{{ s.id }}">
+      <tr class="clickable" data-href="/submission/{{ s.id }}" >
         <td>{{ s.problem.title }}</td>
         <td>{{ s.status_long }}</td>
         <td>{{ s.result_long }}</td>

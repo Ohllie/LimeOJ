@@ -49,7 +49,41 @@ The first line of the input contains n, the length of the list.<br>
 The next line contains n space separated integers.
     """
     p.difficulty = "1"
-    p.grader = "print(\"I'm a grader\")"
+    p.grader = """
+import os
+import sys
+
+def main():
+  if len(sys.argv) != 3:
+    sys.exit(1)
+
+  user_output_path = sys.argv[1]
+  ref_output_path = sys.argv[2]
+
+  with open(user_output_path) as f:
+    user_output = f.read()
+
+  with open(ref_output_path) as f:
+    ref_output = f.read()
+
+  if not user_output or not ref_output or len(user_output) == 0:
+    sys.exit(1)
+
+  us = [x for x in user_output.strip().split() if len(x)]
+  rs = [x for x in ref_output.strip().split() if len(x)]
+
+  if len(us) != len(rs):
+    sys.exit(1)
+
+  for i, x in enumerate(rs):
+    if x != us[i]:
+      sys.exit(1)
+
+  sys.exit(0)
+
+if __name__ == '__main__':
+  main()
+"""
 
     session.add(p)
     problems.append(p.id)
@@ -59,6 +93,13 @@ The next line contains n space separated integers.
     t.input = """5
 1 2 3 4 5""".encode("ascii")
     t.output = "1 4 9 16 25".encode("ascii")
+    t.example = True
+
+    t = Test()
+    t.problem_id = problems[0]
+    t.input = """5
+6 7 8 9 10""".encode("ascii")
+    t.output = "36 49 64 81 100".encode("ascii")
     t.example = True
 
     s = Submission()

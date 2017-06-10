@@ -6,9 +6,13 @@ import traceback
 import requests
 import datetime
 import docker
+import tempfile
+import json
 
 from flask import Flask, render_template, g, request, flash, redirect, session, url_for
 from queue import Queue, Empty
+
+from constants import *
 
 # How often the grader polls its internal queue, per second
 GRADER_POLLS_PER_SEC = 2
@@ -92,11 +96,14 @@ class Grader(object):
     if item == "check_request":
       self._check_queue()
 
-  def _get_resource(self, path):
+  def _get_resource(self, path, *args, **kwargs):
     """ Fetch a resource from the app """
 
+    if "timeout" not in kwargs:
+      kwargs["timeout"] = GRADER_POLLER_TIMEOUT
+
     try:
-      r = requests.get(GRADER_APP_URL + "/" + path, timeout=GRADER_POLLER_TIMEOUT)
+      r = requests.get(GRADER_APP_URL + "/" + path, *args, **kwargs)
     except Exception as e:
       self._error("Exception while trying to fetch {}! {}".format(path, e))
       return
@@ -119,6 +126,10 @@ class Grader(object):
 
     submissions = self._get_resource("grader/queue")
 
+    if submissions is None:
+      self._log("Could not get submissions!")
+      return
+
     if len(submissions):
       self._log("{} submissions in queue!".format(len(submissions)))
 
@@ -133,7 +144,79 @@ class Grader(object):
   def _grade_submission(self, id):
     """ Grade a submission with the given id, blocking call """
 
-    self._get_resource("grader/{}/start".format(id))
+    def set_status(status, result):
+      self._get_resource("grader/{}/result".format(id), params={"status": status, "result": result})
+
+    r = self._get_resource("grader/{}/start".format(id))
+
+    if not r:
+      self._log("Failed to start the grading process for submission {}".format(id))
+      return
+
+    # download the submission data
+
+    data = self._get_resource("grader/{}/data".format(id))
+
+    if not data:
+      set_status(STATUS_COMPLETE, RESULT_QAQ)
+      return
+
+    # create the temporary storage directory
+
+    path = tempfile.mkdtemp()
+
+    print("Created a temp path {}".format(path))
+
+    # write the source
+
+    with open("{}/source.cpp".format(path), "w") as f:
+      f.write(data["code"])
+
+    # write the grader
+
+    with open("{}/grader.py".format(path), "w") as f:
+      f.write(data["grader"])
+
+    # create the submission.json
+
+    submission = {
+      "lang": data["lang"],
+      "id": id,
+      "tests": data["test_ids"],
+      "file": "source.cpp",
+      "time_limit": data["time_limit"],
+      "memory_limit": data["memory_limit"],
+    }
+
+    with open("{}/submission.json".format(path), "w") as f:
+      f.write(json.dumps(submission))
+
+    # start the docker dockery
+
+    logs = dclient.containers.run(
+      "grader_docker",
+      stdout=True,
+      stderr=True,
+      volumes={
+        "/tests": {"bind": "/tests", "mode": "ro"},
+        path: {"bind": "/subdata", "mode": "rw"}
+      }
+    )
+
+    print(logs)
+
+    try:
+      with open("{}/out.json".format(path)) as f:
+        result = json.loads(f.read())
+    except:
+      pass
+
+    if not result or not len(result):
+      set_status(STATUS_COMPLETE, RESULT_QAQ)
+
+    print(result)
+
+    set_status(STATUS_COMPLETE, result.get("result", RESULT_QAQ))
 
   def start(self):
     """ Start the main loop runner thread """
